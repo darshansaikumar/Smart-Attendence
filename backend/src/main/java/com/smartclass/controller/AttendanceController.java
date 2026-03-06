@@ -75,7 +75,8 @@ public class AttendanceController {
         record.setStudent(studentOpt.get());
         record.setSessionId(dto.getSessionId()); 
         record.setSubject(dto.getSubject());
-        record.setTimestamp(LocalDateTime.now());
+        // Use provided timestamp if present, otherwise use current time
+        record.setTimestamp(dto.getTimestamp() != null ? dto.getTimestamp() : LocalDateTime.now());
         record.setStatus(dto.getStatus()); // PRESENT, ABSENT, etc.
         record.setAttentionScore(100.0); // Manual entry assumes full attention or N/A
         record.setIsDrowsy(false);
@@ -89,6 +90,7 @@ public class AttendanceController {
         private Long sessionId;
         private String subject;
         private String status;
+        private LocalDateTime timestamp;
         
         public Long getStudentId() { return studentId; }
         public void setStudentId(Long id) { studentId = id; }
@@ -98,6 +100,8 @@ public class AttendanceController {
         public void setSubject(String s) { subject = s; }
         public String getStatus() { return status; }
         public void setStatus(String s) { status = s; }
+        public LocalDateTime getTimestamp() { return timestamp; }
+        public void setTimestamp(LocalDateTime t) { timestamp = t; }
     }
 
     @GetMapping("/session/{sessionId}")
